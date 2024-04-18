@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Mail</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #333;
+            color: #fff;
+            margin: 0;
+            padding: 0;
+        }
+        .email-container {
+            max-width: 600px;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #444;
+            border-radius: 5px;
+            box-shadow: 0 0 10px rgba(0,0,0,0.1);
+        }
+        .email-header {
+            background-color: #555;
+            color: #fff;
+            padding: 20px;
+            text-align: center;
+            border-radius: 5px 5px 0 0;
+        }
+        .email-content {
+            padding: 20px;
+            color: #ddd;
+            line-height: 1.5;
+        }
+        .email-footer {
+            background-color: #555;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            border-radius: 0 0 5px 5px;
+        }
+        img {
+            display: block;
+            margin: 20px auto;
+            width: 50px;
+            height: 50px;
+        }
+        .small-emoji {
+            font-size: 5px;  /* Adjust as needed */
+        }
+    </style>
+</head>
+<body>
+<div class="email-container" style="background: #8b6546">
+    <div class="email-header" style="background-image: url('https://d1csarkz8obe9u.cloudfront.net/posterpreviews/email-header%2Cevent-design-template-77aed8401d9db0ccd938b3f497e3d4f3_screen.jpg?ts=1605542701');
+                    background-repeat: no-repeat; background-size: cover">
+        <h3 >Hello, we are happy  to see you!</h3>
+    </div>
+    <div class="email-content">
+        <p style="color: #ffffff">This email was automatically sent to inform you: </p>
+        <p><strong th:text="${body}"></strong></p>
+    </div>
+    <div class="email-footer" style="background-image: url('https://d1csarkz8obe9u.cloudfront.net/posterpreviews/email-header%2Cevent-design-template-77aed8401d9db0ccd938b3f497e3d4f3_screen.jpg?ts=1605542701');
+                    background-repeat: no-repeat; background-size: cover">
+        <p>Best Wishes,</p>
+        <p>Olx Team.</p>
+        <img src="https://yt3.googleusercontent.com/bIOcvouDxvbJ_ZLkCTjh3cAB7huiOR6OJu7O7AJt8IsBiTXwWysCHnh7k1mBb5z7DkS87gvQ=s900-c-k-c0x00ffffff-no-rj">
+    </div>
+</div>
+</body>
+</html>
