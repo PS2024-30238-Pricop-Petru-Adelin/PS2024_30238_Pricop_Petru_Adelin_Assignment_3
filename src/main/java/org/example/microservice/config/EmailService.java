@@ -1,9 +1,11 @@
-package org.example.microservice.service;
+package org.example.microservice.config;
 
+import com.olxapplication.dtos.UserMailDTO;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.example.microservice.dtos.ResponseMessageDto;
 import org.example.microservice.dtos.NotificationRequestDto;
+import org.example.microservice.service.QueueListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -24,8 +26,6 @@ public class EmailService {
     private Environment environment;
 
     private final SpringTemplateEngine templateEngine;
-    @Autowired
-    private QueueListener queueListener;
 
     public EmailService(SpringTemplateEngine templateEngine) {
         this.templateEngine = templateEngine;
@@ -51,6 +51,29 @@ public class EmailService {
         } catch (MessagingException e) {
             e.printStackTrace();
             return new ResponseMessageDto("Failure", "Failed to send email");
+        }
+    }
+
+    public void sendEmail(UserMailDTO userMailDTO) {
+        try {
+
+            String subject = "";
+            String body = "";
+            if(userMailDTO.getAction().equals("update")){
+                subject = "User update";
+                body = "Your user details have been updated successfully: " +  userMailDTO.getFirstName() + " " + userMailDTO.getLastName() + ".";
+            } else
+            if(userMailDTO.getAction().equals("insert")){
+                subject = "User added";
+                body = "You are now part of our comunity, " + userMailDTO.getFirstName() + " " + userMailDTO.getLastName()+ "\uD83E\uDD73\uD83E\uDD73";
+            }
+
+            sendHtmlEmail(userMailDTO.getEmail(), subject, body, "User.html");
+            return ;
+
+        } catch (MessagingException e) {
+            e.printStackTrace();
+            return ;
         }
     }
 
