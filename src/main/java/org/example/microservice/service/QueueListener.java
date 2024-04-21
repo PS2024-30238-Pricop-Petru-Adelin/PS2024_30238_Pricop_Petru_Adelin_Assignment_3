@@ -1,7 +1,6 @@
 package org.example.microservice.service;
 
 import com.olxapplication.dtos.UserMailDTO;
-import org.example.microservice.config.EmailService;
 import org.springframework.amqp.rabbit.annotation.RabbitHandler;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;

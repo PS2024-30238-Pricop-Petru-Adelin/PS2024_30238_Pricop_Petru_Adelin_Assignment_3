@@ -1,11 +1,10 @@
-package org.example.microservice.config;
+package org.example.microservice.service;
 
 import com.olxapplication.dtos.UserMailDTO;
 import jakarta.mail.MessagingException;
 import jakarta.mail.internet.MimeMessage;
 import org.example.microservice.dtos.ResponseMessageDto;
 import org.example.microservice.dtos.NotificationRequestDto;
-import org.example.microservice.service.QueueListener;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.env.Environment;
 import org.springframework.mail.javamail.JavaMailSender;
