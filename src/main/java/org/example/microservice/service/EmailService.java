@@ -13,9 +13,12 @@ import org.springframework.stereotype.Service;
 import org.thymeleaf.context.Context;
 import org.thymeleaf.spring6.SpringTemplateEngine;
 
+import java.io.File;
 import java.nio.charset.StandardCharsets;
 
-
+/**
+ * Service class for sending emails in microservice.
+ */
 @Service
 public class EmailService {
 
@@ -30,6 +33,11 @@ public class EmailService {
         this.templateEngine = templateEngine;
     }
 
+
+    /**
+     * Sends an email received synchronously based on the action specified in the NotificationRequestDto(insert, update, report).
+     * @param notificationRequestDto The notificationRequestDto object containing the necessary data for sending the email.
+     */
     public ResponseMessageDto sendEmail(NotificationRequestDto notificationRequestDto) {
         try {
 
@@ -44,7 +52,7 @@ public class EmailService {
                     body = "You are now part of our comunity, " + notificationRequestDto.getNume() + "\uD83E\uDD73\uD83E\uDD73";
                 }
 
-            sendHtmlEmail(notificationRequestDto.getEmail(), subject, body, "User.html");
+            sendHtmlEmail(notificationRequestDto.getEmail(), subject, body, "User.html", notificationRequestDto.getFilePath());
             return new ResponseMessageDto("Success", "Email sent successfully");
 
         } catch (MessagingException e) {
@@ -53,6 +61,10 @@ public class EmailService {
         }
     }
 
+    /**
+     * Sends an email received asynchronously based on the action specified in the UserMailDTO(insert, update, report).
+     * @param userMailDTO The userMail object containing the necessary data for sending the email.
+     */
     public void sendEmail(UserMailDTO userMailDTO) {
         try {
 
@@ -66,8 +78,12 @@ public class EmailService {
                 subject = "User added";
                 body = "You are now part of our comunity, " + userMailDTO.getFirstName() + " " + userMailDTO.getLastName()+ "\uD83E\uDD73\uD83E\uDD73";
             }
+            if(userMailDTO.getAction().equals("report")){
+                subject = "Report";
+                body = "Your report is here, " + userMailDTO.getFirstName() + " " + userMailDTO.getLastName()+ "\uD83D\uDCC4";
+            }
 
-            sendHtmlEmail(userMailDTO.getEmail(), subject, body, "User.html");
+            sendHtmlEmail(userMailDTO.getEmail(), subject, body, "User.html", userMailDTO.getFilePath());
             return ;
 
         } catch (MessagingException e) {
@@ -76,7 +92,17 @@ public class EmailService {
         }
     }
 
-    public void sendHtmlEmail(String to, String subject, String body, String templateName) throws MessagingException {
+    /**
+     * Sends an HTML email with the specified subject and body.
+     * If a file path is provided, the file is attached to the email.
+     * @param to The recipient of the email.
+     * @param subject The subject of the email.
+     * @param body The body of the email.
+     * @param templateName The name of the Thymeleaf template to use for the email.
+     * @param filePath The path of the file to attach to the email.
+     * @throws MessagingException If there is an error creating or sending the email.
+     */
+    public void sendHtmlEmail(String to, String subject, String body, String templateName, String filePath) throws MessagingException {
         MimeMessage message = emailSender.createMimeMessage();
         Context context = new Context();
         context.setVariable("body", body);
@@ -87,6 +113,10 @@ public class EmailService {
         helper.setTo(to);
         helper.setSubject(subject);
         helper.setText(process, true);
+        if(!filePath.equals("")) {
+            File f = new File(filePath);
+            helper.addAttachment("Your Report", f);
+        }
 
         emailSender.send(message);
     }

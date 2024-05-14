@@ -8,12 +8,21 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * The controller for sending synchronous emails.
+ */
 @RestController
 @RequestMapping("/microservice")
 public class Controller {
     @Autowired
     EmailService emailService;
 
+    /**
+     * Endpoint for receiving email notifications.
+     * @param headers The HTTP headers from the request.
+     * @param notificationRequestDto The notification request data transfer object.
+     * @return A ResponseEntity with a message indicating the success or failure of the email sending operation.
+     */
     @PostMapping("/receiver")
     public ResponseEntity<ResponseMessageDto> sendEmail(@RequestHeader HttpHeaders headers, @RequestBody NotificationRequestDto notificationRequestDto) {
         if(notificationRequestDto.getEmail() == null || notificationRequestDto.getEmail().isEmpty()) {

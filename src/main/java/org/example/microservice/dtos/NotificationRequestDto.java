@@ -12,4 +12,5 @@ public class NotificationRequestDto {
     private String nume;
     private String email;
     private String action;
+    private String filePath;
 }
